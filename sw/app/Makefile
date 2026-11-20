@@ -98,14 +98,14 @@ $(1)_SRC_DIR = ./$(1)/
 $(1)_SRC_FILES = $$(shell find $$($(1)_SRC_DIR) -name "*.c")
 $(1)_OBJ_FILES = $$($(1)_SRC_FILES:.c=.o)
 ALL_OBJ += $$($(1)_OBJ_FILES)
-$(1): $(1).riscv $(1).D $(1).hex $(1).bin $(1).mem $(1).coe
+$(1): $(1).riscv $(1).objdump $(1).hex $(1).bin $(1).mem $(1).coe
 $(1).riscv: libcva6.a $$($(1)_OBJ_FILES)
 	$$(RISCV_GCC) $$(RISCV_CFLAGS) -o $$@ $$^ $$(RISCV_LDFLAGS)
 endef
 
 $(foreach bmark,$(bmarks),$(eval $(call generate_rules,$(bmark))))
 
-%.D: %.riscv
+%.objdump: %.riscv
 	$(RISCV_OBJDUMP) -D $< > $@
 
 %.hex: %.riscv
@@ -132,4 +132,4 @@ libcva6.a: $(OBJ_BSP)
 all: $(bmarks)
 
 clean:
-	rm -rf $(OBJ_BSP) $(ALL_OBJ) libcva6.a *.riscv *.o *.D *.mem *.bin *.coe *.hex
+	rm -rf $(OBJ_BSP) $(ALL_OBJ) libcva6.a *.riscv *.o *.objdump *.mem *.bin *.coe *.hex
