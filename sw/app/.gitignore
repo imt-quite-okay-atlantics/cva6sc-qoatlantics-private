@@ -1,0 +1,7 @@
+*.a
+*.bin
+*.coe
+*.hex
+*.mem
+*.objdump
+*.riscv
